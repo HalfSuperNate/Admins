@@ -3,13 +3,12 @@ pragma solidity ^0.8.20;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
 
-
 /**
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) and a project leader that can grant exclusive access to
  * specific functions.
  */
-abstract contract Admins is Ownable {
+abstract contract Admins is Context, Ownable {
     address public projectLeader;
     address[] public admins;
 
@@ -25,6 +24,18 @@ abstract contract Admins is Ownable {
      */
     constructor(address initialOwner) Ownable(initialOwner) {
         projectLeader = initialOwner;
+    }
+
+    function _msgSender() internal view virtual override returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal pure virtual override returns (bytes calldata) {
+        return msg.data;
+    }
+
+    function _contextSuffixLength() internal pure virtual override returns (uint256) {
+        return 0;
     }
 
      /**
